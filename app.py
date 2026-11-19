@@ -16,7 +16,7 @@ app.config.update(
     SQLALCHEMY_TRACK_MODIFICATIONS=False, MAX_CONTENT_LENGTH=8 * 1024 * 1024)
 db = SQLAlchemy(app)
 
-BRAND, CURRENCY = 'Clora and Co', '$'
+BRAND, CURRENCY = 'Clora and Co', '₹'
 CATEGORIES = ['Men', 'Women', 'Kids', 'Accessories']
 STATUSES = ['Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled']
 TRACK = STATUSES[:5]
