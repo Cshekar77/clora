@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<div class="box"><h3 class="sec-title">My Wishlist</h3><div class="row row-cols-2 row-cols-md-4 g-3">{% for p in products %}{% include '_card.html' %}{% else %}<p class="p-3">Nothing saved yet.</p>{% endfor %}</div></div>{% endblock %}

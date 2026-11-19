@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% block title %}{{ p.name }} | {{ BRAND }}{% endblock %}{% block content %}
+<div class="box"><div class="row g-4"><div class="col-md-5"><img class="img-fluid rounded" src="{{ url_for('static', filename='uploads/'+p.image) }}" alt="{{ p.name }}"></div>
+<div class="col-md-7"><div class="text-muted">{{ p.category }}</div><h2 class="sec-title">{{ p.name }}</h2>
+  <div class="mb-2"><span class="price fs-3">{{ CUR }}{{ '%.2f'|format(p.price) }}</span>{% if p.discount %} <span class="old">{{ CUR }}{{ '%.2f'|format(p.old_price) }}</span> <span class="badge badge-off">-{{ p.discount }}%</span>{% endif %}</div>
+  <p>{{ p.description }}</p>
+  {% if p.stock > 0 %}<p class="text-success fw-semibold">In stock ({{ p.stock }})</p>
+  <form method="post" action="{{ url_for('cart_add') }}"><input type="hidden" name="pid" value="{{ p.id }}">
+    <div class="fw-semibold">Size</div><div class="opt mb-2">{% for s in p.size_list %}<input type="radio" name="size" id="s{{ loop.index }}" value="{{ s }}" {{ 'checked' if loop.first }}><label for="s{{ loop.index }}">{{ s }}</label>{% endfor %}</div>
+    <div class="fw-semibold">Color</div><div class="opt mb-3">{% for c in p.color_list %}<input type="radio" name="color" id="c{{ loop.index }}" value="{{ c }}" {{ 'checked' if loop.first }}><label for="c{{ loop.index }}">{{ c }}</label>{% endfor %}</div>
+    <div class="d-flex gap-2"><input type="number" name="qty" value="1" min="1" max="{{ p.stock }}" class="form-control" style="width:90px">
+      <button class="btn btn-gold px-4"><i class="bi bi-bag-plus"></i> Add to Cart</button></div></form>
+  {% else %}<p class="text-danger fw-semibold">Out of stock</p>{% endif %}
+  <form method="post" action="{{ url_for('wish_toggle', pid=p.id) }}" class="mt-2"><button class="btn btn-outline-dark btn-sm"><i class="bi bi-heart{{ '-fill' if p.id in wish_ids }}"></i> {{ 'Remove from' if p.id in wish_ids else 'Add to' }} wishlist</button></form>
+</div></div></div>
+{% if related %}<div class="box mt-4"><h4 class="sec-title">You may also like</h4><div class="row row-cols-2 row-cols-md-4 g-3">{% for p in related %}{% include '_card.html' %}{% endfor %}</div></div>{% endif %}
+{% endblock %}

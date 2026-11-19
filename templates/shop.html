@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}
+<div class="row g-3"><aside class="col-md-3"><div class="box">
+  <h6 class="fw-bold">Category</h6><div class="list-group list-group-flush mb-3">
+    <a class="list-group-item {{ 'active' if not cat }}" href="{{ url_for('shop', q=q) }}">All</a>
+    {% for c in CATEGORIES %}<a class="list-group-item {{ 'active' if cat==c }}" href="{{ url_for('shop', category=c, q=q) }}">{{ c }}</a>{% endfor %}</div>
+  <form><input type="hidden" name="category" value="{{ cat }}"><input type="hidden" name="q" value="{{ q }}">
+    <h6 class="fw-bold">Price</h6><div class="input-group input-group-sm mb-2"><input name="min" type="number" class="form-control" placeholder="Min" value="{{ request.args.get('min','') }}"><input name="max" type="number" class="form-control" placeholder="Max" value="{{ request.args.get('max','') }}"></div>
+    <h6 class="fw-bold">Sort</h6><select name="sort" class="form-select form-select-sm mb-2"><option value="">Newest</option><option value="low" {{ 'selected' if sort=='low' }}>Price: low to high</option><option value="high" {{ 'selected' if sort=='high' }}>Price: high to low</option></select>
+    <button class="btn btn-ink btn-sm w-100">Apply</button></form></div></aside>
+<section class="col-md-9"><div class="box"><h4 class="sec-title">{{ cat or 'All Clothing' }}{% if q %} <small class="text-muted">results for "{{ q }}"</small>{% endif %}</h4>
+  <p class="text-muted small">{{ products|length }} item(s)</p>
+  <div class="row row-cols-2 row-cols-lg-3 g-3">{% for p in products %}{% include '_card.html' %}{% else %}<p class="p-3">No products found.</p>{% endfor %}</div></div></section></div>
+{% endblock %}

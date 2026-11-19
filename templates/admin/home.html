@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block content %}{% include 'admin/_nav.html' %}
+<div class="row g-3 mb-3">{% for l,v in [('Products',stats.products),('Orders',stats.orders),('Customers',stats.customers),('Revenue',CUR~('%.2f'|format(stats.revenue))),('Low stock (under 5)',stats.low)] %}
+<div class="col"><div class="box text-center"><div class="text-muted small">{{ l }}</div><div class="fs-3 fw-bold">{{ v }}</div></div></div>{% endfor %}</div>
+<div class="box"><div class="d-flex justify-content-between mb-2"><h4 class="sec-title">Products</h4><a class="btn btn-gold" href="{{ url_for('admin_product') }}"><i class="bi bi-plus-lg"></i> Add product</a></div>
+<div class="table-responsive"><table class="table align-middle table-sm"><thead><tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Featured</th><th></th></tr></thead><tbody>
+{% for p in products %}<tr><td><img class="thumb" src="{{ url_for('static', filename='uploads/'+p.image) }}"></td><td>{{ p.name }}</td><td>{{ p.category }}</td><td>{{ CUR }}{{ '%.2f'|format(p.price) }}</td>
+<td class="{{ 'text-danger fw-bold' if p.stock < 5 }}">{{ p.stock }}</td><td>{{ '&#9733;'|safe if p.featured }}</td>
+<td class="text-nowrap"><a class="btn btn-sm btn-outline-dark" href="{{ url_for('admin_product', pid=p.id) }}">Edit</a>
+<form class="d-inline" method="post" action="{{ url_for('admin_product_delete', pid=p.id) }}" onsubmit="return confirm('Delete this product?')"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>{% endfor %}</tbody></table></div></div>
+<div class="box mt-3"><h5>Recent orders</h5>{% for o in orders %}<div class="small">#{{ o.id }} &middot; {{ o.name }} &middot; {{ CUR }}{{ '%.2f'|format(o.total) }} &middot; {{ o.status }}</div>{% else %}<div class="small text-muted">None yet.</div>{% endfor %}</div>{% endblock %}

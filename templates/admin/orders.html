@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block content %}{% include 'admin/_nav.html' %}<div class="box"><h4 class="sec-title">Orders</h4>
+{% for o in orders %}<div class="border rounded p-3 mb-2"><div class="d-flex justify-content-between flex-wrap gap-2"><div><strong>#{{ o.id }}</strong> {{ o.name }} <span class="text-muted small">({{ o.user.email if o.user }}) {{ o.created.strftime('%d %b %Y') }}</span><br><span class="small">{{ o.address }} &middot; {{ o.phone }} &middot; {{ o.payment }}</span></div>
+<form method="post" action="{{ url_for('admin_order_status', oid=o.id) }}" class="d-flex gap-1"><select name="status" class="form-select form-select-sm">{% for s in STATUSES %}<option {{ 'selected' if o.status==s }}>{{ s }}</option>{% endfor %}</select><button class="btn btn-sm btn-ink">Update</button></form></div>
+<div class="small mt-2">{% for i in o.items %}{{ i.qty }} x {{ i.name }} ({{ i.size }}, {{ i.color }}){{ ', ' if not loop.last }}{% endfor %} &mdash; <strong>{{ CUR }}{{ '%.2f'|format(o.total) }}</strong></div></div>
+{% else %}<p>No orders yet.</p>{% endfor %}</div>{% endblock %}

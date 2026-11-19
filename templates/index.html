@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}
+{% if banners %}<div id="hero" class="carousel slide hero rounded overflow-hidden mb-4" data-bs-ride="carousel" data-bs-interval="4500">
+  <div class="carousel-indicators">{% for b in banners %}<button data-bs-target="#hero" data-bs-slide-to="{{ loop.index0 }}" class="{{ 'active' if loop.first }}"></button>{% endfor %}</div>
+  <div class="carousel-inner">{% for b in banners %}
+    <div class="carousel-item {{ 'active' if loop.first }}" style="background-image:url('{{ url_for('static', filename='uploads/'+b.image) }}')">
+      <div class="cap"><h2>{{ b.title }}</h2><p class="lead">{{ b.subtitle }}</p><a href="{{ b.link }}" class="btn btn-gold px-4">{{ b.button_text }}</a></div></div>{% endfor %}</div>
+  <button class="carousel-control-prev" data-bs-target="#hero" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+  <button class="carousel-control-next" data-bs-target="#hero" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button></div>{% endif %}
+<div class="row g-3 mb-4">{% for c in CATEGORIES %}<div class="col-6 col-md-3"><a class="catcard" href="{{ url_for('shop', category=c) }}"><span>{{ c }}</span></a></div>{% endfor %}</div>
+{% if deals %}<div class="box mb-4"><h3 class="sec-title">Today's Deals</h3><div class="row row-cols-2 row-cols-md-4 g-3">{% for p in deals %}{% include '_card.html' %}{% endfor %}</div></div>{% endif %}
+<div class="box mb-4"><div class="d-flex justify-content-between"><h3 class="sec-title">Featured Collection</h3><a href="{{ url_for('shop') }}">See all</a></div>
+  <div class="row row-cols-2 row-cols-md-4 g-3">{% for p in featured %}{% include '_card.html' %}{% endfor %}</div></div>
+<div class="box"><h3 class="sec-title">New Arrivals</h3><div class="row row-cols-2 row-cols-md-4 g-3">{% for p in newest %}{% include '_card.html' %}{% endfor %}</div></div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}{{ BRAND }} | Modern Fashion{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"></head><body>
+<header class="cc-top"><div class="container py-2 d-flex align-items-center gap-3 flex-wrap">
+  <a class="cc-brand" href="{{ url_for('index') }}">C&amp;C<small>{{ BRAND|upper }}</small></a>
+  <form class="cc-search flex-grow-1 input-group" action="{{ url_for('shop') }}" style="min-width:240px">
+    <select name="category" class="form-select"><option value="">All</option>{% for c in CATEGORIES %}<option>{{ c }}</option>{% endfor %}</select>
+    <input name="q" class="form-control" placeholder="Search clothing, brands and more" value="{{ request.args.get('q','') }}">
+    <button class="btn"><i class="bi bi-search"></i></button></form>
+  <div class="d-flex gap-3 align-items-center">
+    {% if user %}
+      <div class="dropdown"><a class="link dropdown-toggle" data-bs-toggle="dropdown" href="#">Hello, {{ user.name.split()[0] }}</a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          {% if user.is_admin %}<li><a class="dropdown-item" href="{{ url_for('admin_home') }}">Admin Dashboard</a></li>{% endif %}
+          <li><a class="dropdown-item" href="{{ url_for('dashboard') }}">My Orders &amp; Profile</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('wishlist') }}">Wishlist</a></li>
+          <li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="{{ url_for('logout') }}">Sign out</a></li></ul></div>
+    {% else %}<a class="link" href="{{ url_for('login') }}">Sign in</a><a class="link" href="{{ url_for('register') }}">Register</a>{% endif %}
+    <a class="link fs-5" href="{{ url_for('wishlist') }}"><i class="bi bi-heart"></i></a>
+    <a class="link fs-5 position-relative" href="{{ url_for('cart') }}"><i class="bi bi-bag"></i>
+      {% if cart_count %}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">{{ cart_count }}</span>{% endif %}</a>
+  </div></div>
+  <nav class="cc-sub"><div class="container"><a href="{{ url_for('shop') }}">All</a>{% for c in CATEGORIES %}<a href="{{ url_for('shop', category=c) }}">{{ c }}</a>{% endfor %}
+    <a href="{{ url_for('shop', sort='low') }}">Deals</a></div></nav></header>
+<main class="container py-3">
+  {% with msgs = get_flashed_messages(with_categories=true) %}{% for cat, m in msgs %}<div class="alert alert-{{ cat }} alert-dismissible fade show">{{ m }}<button class="btn-close" data-bs-dismiss="alert"></button></div>{% endfor %}{% endwith %}
+  {% block content %}{% endblock %}</main>
+<footer class="mt-5 py-4"><div class="container d-flex justify-content-between flex-wrap gap-2">
+  <div><span class="serif fs-5 text-white">{{ BRAND }}</span><br><small>Modern essentials. Timeless style.</small></div>
+  <div class="small">&copy; {{ BRAND }}. Free returns within 30 days.</div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

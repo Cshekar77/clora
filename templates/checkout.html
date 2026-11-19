@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block content %}<div class="row g-3"><div class="col-md-7"><div class="box"><h3 class="sec-title">Checkout</h3>
+<form method="post"><label class="form-label">Full name</label><input name="name" class="form-control mb-2" required value="{{ user.name }}">
+<label class="form-label">Phone</label><input name="phone" class="form-control mb-2" required value="{{ user.phone }}">
+<label class="form-label">Delivery address</label><textarea name="address" class="form-control mb-2" rows="3" required>{{ user.address }}</textarea>
+<label class="form-label">Payment method</label><select name="payment" class="form-select mb-2"><option>Cash on Delivery</option><option>Credit / Debit Card (demo)</option><option>UPI / Wallet (demo)</option></select>
+<div class="form-text mb-3">Payments are simulated in this demo; no real charges are made.</div><button class="btn btn-gold px-4">Place Order</button></form></div></div>
+<div class="col-md-5"><div class="box"><h5>Order summary</h5>{% for i in items %}<div class="d-flex justify-content-between small py-1"><span>{{ i.qty }} x {{ i.p.name }} ({{ i.size }}, {{ i.color }})</span><span>{{ CUR }}{{ '%.2f'|format(i.sub) }}</span></div>{% endfor %}<hr><div class="d-flex justify-content-between fs-5"><span>Total</span><strong>{{ CUR }}{{ '%.2f'|format(total) }}</strong></div></div></div></div>{% endblock %}

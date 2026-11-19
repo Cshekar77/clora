@@ -1,0 +1,10 @@
+<div class="col"><div class="card pcard h-100">
+  <a href="{{ url_for('product', pid=p.id) }}"><img src="{{ url_for('static', filename='uploads/'+p.image) }}" class="card-img-top" alt="{{ p.name }}"></a>
+  <form method="post" action="{{ url_for('wish_toggle', pid=p.id) }}" class="wish"><button class="btn btn-light btn-sm rounded-circle" title="Wishlist"><i class="bi bi-heart{{ '-fill text-danger' if p.id in wish_ids }}"></i></button></form>
+  <div class="card-body">
+    <div class="small text-muted">{{ p.category }}</div>
+    <a href="{{ url_for('product', pid=p.id) }}" class="text-dark text-decoration-none fw-semibold">{{ p.name }}</a>
+    <div class="mt-1"><span class="price">{{ CUR }}{{ '%.2f'|format(p.price) }}</span>
+      {% if p.discount %}<span class="old ms-1">{{ CUR }}{{ '%.2f'|format(p.old_price) }}</span> <span class="badge badge-off">-{{ p.discount }}%</span>{% endif %}</div>
+    {% if p.stock == 0 %}<div class="small text-danger">Out of stock</div>{% elif p.stock < 5 %}<div class="small text-warning">Only {{ p.stock }} left</div>{% endif %}
+  </div></div></div>

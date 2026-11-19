@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block content %}<div class="row g-3"><div class="col-md-8"><div class="box"><h3 class="sec-title">My Orders</h3>
+{% for o in orders %}<div class="border rounded p-3 mb-2"><div class="d-flex justify-content-between flex-wrap"><div><strong>Order #{{ o.id }}</strong> <span class="text-muted small">{{ o.created.strftime('%d %b %Y') }}</span></div>
+<span class="badge bg-{{ 'success' if o.status=='Delivered' else 'danger' if o.status=='Cancelled' else 'primary' }}">{{ o.status }}</span></div>
+<div class="small text-muted">{{ o.items|length }} item(s) &middot; {{ CUR }}{{ '%.2f'|format(o.total) }}</div><a href="{{ url_for('order_detail', oid=o.id) }}" class="btn btn-sm btn-ink mt-2">Track order</a></div>
+{% else %}<p>No orders yet. <a href="{{ url_for('shop') }}">Shop now</a></p>{% endfor %}</div></div>
+<div class="col-md-4"><div class="box"><h5>My Profile</h5><form method="post" action="{{ url_for('profile') }}">
+<label class="form-label small">Name</label><input name="name" class="form-control mb-2" value="{{ user.name }}" required>
+<label class="form-label small">Email</label><input class="form-control mb-2" value="{{ user.email }}" disabled>
+<label class="form-label small">Phone</label><input name="phone" class="form-control mb-2" value="{{ user.phone }}">
+<label class="form-label small">Address</label><textarea name="address" class="form-control mb-2" rows="3">{{ user.address }}</textarea>
+<label class="form-label small">New password (optional)</label><input name="password" type="password" class="form-control mb-3"><button class="btn btn-gold w-100">Save</button></form></div></div></div>{% endblock %}

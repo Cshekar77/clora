@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}{% include 'admin/_nav.html' %}<div class="box"><h4 class="sec-title">{{ 'Edit' if p.id else 'Add' }} product</h4>
+<form method="post" enctype="multipart/form-data" class="row g-3">
+<div class="col-md-6"><label class="form-label">Name</label><input name="name" class="form-control" required value="{{ p.name or '' }}"></div>
+<div class="col-md-6"><label class="form-label">Category</label><select name="category" class="form-select">{% for c in CATEGORIES %}<option {{ 'selected' if p.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div class="col-md-4"><label class="form-label">Price</label><input name="price" type="number" step="0.01" min="0" class="form-control" required value="{{ p.price if p.price is not none else '' }}"></div>
+<div class="col-md-4"><label class="form-label">Original price (for sale badge)</label><input name="old_price" type="number" step="0.01" class="form-control" value="{{ p.old_price or '' }}"></div>
+<div class="col-md-4"><label class="form-label">Stock</label><input name="stock" type="number" min="0" class="form-control" value="{{ p.stock or 0 }}"></div>
+<div class="col-md-6"><label class="form-label">Sizes (comma separated)</label><input name="sizes" class="form-control" value="{{ p.sizes or 'S,M,L,XL' }}"></div>
+<div class="col-md-6"><label class="form-label">Colors (comma separated)</label><input name="colors" class="form-control" value="{{ p.colors or 'Black' }}"></div>
+<div class="col-12"><label class="form-label">Description</label><textarea name="description" rows="3" class="form-control">{{ p.description or '' }}</textarea></div>
+<div class="col-md-6"><label class="form-label">Image {{ '(leave empty to keep current)' if p.image }}</label><input type="file" name="image" accept="image/*" class="form-control">
+{% if p.image %}<img class="thumb mt-2" src="{{ url_for('static', filename='uploads/'+p.image) }}">{% endif %}</div>
+<div class="col-md-6 d-flex align-items-end"><div class="form-check"><input type="checkbox" name="featured" class="form-check-input" id="f" {{ 'checked' if p.featured }}><label for="f" class="form-check-label">Featured on homepage</label></div></div>
+<div class="col-12"><button class="btn btn-gold px-4">Save</button> <a href="{{ url_for('admin_home') }}" class="btn btn-outline-dark">Cancel</a></div></form></div>{% endblock %}

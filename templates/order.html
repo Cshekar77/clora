@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block content %}<div class="box"><h3 class="sec-title">Order #{{ o.id }}</h3>
+{% if o.status == 'Cancelled' %}<div class="alert alert-danger">This order was cancelled.</div>{% else %}
+<div class="track">{% set cur = TRACK.index(o.status) %}{% for s in TRACK %}<div class="st {{ 'done' if loop.index0 <= cur }}"><div class="dot">{{ '&check;'|safe if loop.index0 <= cur else loop.index }}</div>{{ s }}</div>{% endfor %}</div>{% endif %}
+<div class="row"><div class="col-md-8"><table class="table align-middle">{% for i in o.items %}<tr><td><img class="thumb" src="{{ url_for('static', filename='uploads/'+i.image) }}"></td><td>{{ i.name }}<div class="small text-muted">{{ i.size }} / {{ i.color }}</div></td><td>{{ i.qty }} x {{ CUR }}{{ '%.2f'|format(i.price) }}</td></tr>{% endfor %}</table>
+<div class="text-end fs-5">Total: <strong>{{ CUR }}{{ '%.2f'|format(o.total) }}</strong></div></div>
+<div class="col-md-4 small"><strong>Ship to</strong><br>{{ o.name }}<br>{{ o.address }}<br>{{ o.phone }}<br><br><strong>Payment:</strong> {{ o.payment }}<br><strong>Placed:</strong> {{ o.created.strftime('%d %b %Y %H:%M') }}</div></div></div>{% endblock %}
